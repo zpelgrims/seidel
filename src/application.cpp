@@ -116,15 +116,10 @@ inline int fastrand() {
 // -----------------------------------------------------------
 void Application::Init()
 {
-	// read cmd arguments, ordering:
-	// lens.zmx image.exr samplesperframe framecount filename
-
-
-
 
 	lensFileName = "/home/cactus/seidel/assets/lensdesigns/doublegauss.zmx";
 	char* imageFileName = "/home/cactus/seidel/assets/shanghai.exr";
-	samplesPerFrame = 10000;
+	samplesPerFrame = 1000;
 	frameCountSave = 0;
 	outputFileName = "/home/cactus/seidel/assets/shanghai_out.exr";
 	focus = 0.6;
@@ -145,7 +140,6 @@ void Application::Init()
 	//
 
 	ls = LensSystem();
-	// ls.screen = screen;
 	ls.FOCUS = focus;
 	ls.ImportFile( lensFileName );
 
@@ -242,11 +236,12 @@ void Application::Init()
 
 	std::cout << "starting computation" << std::endl;
 	
+	#pragma omp parallel for
+	for (int n=0; n<samplesPerFrame; n++){
 	for ( int y = 0; y < SCRHEIGHT; y++ )
 	{
 		for ( int x = 0; x < SCRWIDTH; x++ )
 		{
-			// for (int n=0; n<samplesPerFrame; n++){
 
 				float _samples = contributions[y * SCRWIDTH + x] / contributionPerSample;
 				int samples = (int)_samples; // base number of samples, floor
@@ -256,7 +251,7 @@ void Application::Init()
 				for ( int sample = 0; sample < samples; sample++ )
 					dof.Apply( inputImage, accumulator, cocMap, x, y, &ls, multiplier, false );
 				totalSamplesTaken += samples;
-			// }
+			}
 		}
 	}
 
@@ -271,10 +266,10 @@ void Application::Init()
 		for ( int x = 0; x < SCRWIDTH; x++ )
 		{
 			float4 pixel = accumulator[y * SCRWIDTH + x];
-			img[(y * SCRWIDTH + x)] = pixel.r;
-			img[(y * SCRWIDTH + x)+1] = pixel.g;
-			img[(y * SCRWIDTH + x)+2] = pixel.b;
-			img[(y * SCRWIDTH + x)+3] = pixel.a;
+			img[((y * SCRWIDTH + x)*4)] = pixel.r;
+			img[((y * SCRWIDTH + x)*4)+1] = pixel.g;
+			img[((y * SCRWIDTH + x)*4)+2] = pixel.b;
+			img[((y * SCRWIDTH + x)*4)+3] = pixel.a;
 // #ifdef NORMALIZE_PIXELS
 // 			pixel.rgb = HelperFunctions::ToneMap( pixel.rgb * ( exposure / pixel.a ), gamma );
 // #else

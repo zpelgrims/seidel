@@ -15,15 +15,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ext/stb)
 # link_directories(${CMAKE_CURRENT_SOURCE_DIR}/ext/stb)
 
-# # OpenMP
-# if (APPLE)
-# # This works with default 'brew install libomp'
-#     set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp -I$(brew --prefix libomp)/include")
-#     include_directories(/usr/local/opt/libomp/include)
-#     set(OpenMP_CXX_LIB_NAMES "omp")
-#     set(OpenMP_omp_LIBRARY /usr/local/opt/libomp/lib/libomp.a)
-# endif()
-# find_package(OpenMP REQUIRED)
+# OpenMP
+if (APPLE)
+# This works with default 'brew install libomp'
+    set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp -I$(brew --prefix libomp)/include")
+    include_directories(/usr/local/opt/libomp/include)
+    set(OpenMP_CXX_LIB_NAMES "omp")
+    set(OpenMP_omp_LIBRARY /usr/local/opt/libomp/lib/libomp.a)
+endif()
+find_package(OpenMP REQUIRED)
 
 # NANOGUI
 # set(NANOGUI_BUILD_EXAMPLE OFF CACHE BOOL " " FORCE)
@@ -57,4 +57,4 @@ file(GLOB src_files
 add_executable(seidel ${src_files})
 
 # target_link_libraries(seidel nanogui ${NANOGUI_EXTRA_LIBS} ${EMBREE_LIBRARY} OpenMP::OpenMP_CXX)
-target_link_libraries(seidel)
+target_link_libraries(seidel OpenMP::OpenMP_CXX)
