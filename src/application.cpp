@@ -124,7 +124,7 @@ void Application::Init()
 
 	lensFileName = "/home/cactus/seidel/assets/lensdesigns/doublegauss.zmx";
 	char* imageFileName = "/home/cactus/seidel/assets/shanghai.exr";
-	samplesPerFrame = 10000000;
+	samplesPerFrame = 10000;
 	frameCountSave = 0;
 	outputFileName = "/home/cactus/seidel/assets/shanghai_out.exr";
 	focus = 0.6;
@@ -240,12 +240,13 @@ void Application::Init()
 
 	aperture = clamp( aperture, 0.0f, 1.0f );
 
+	std::cout << "starting computation" << std::endl;
 	
 	for ( int y = 0; y < SCRHEIGHT; y++ )
 	{
 		for ( int x = 0; x < SCRWIDTH; x++ )
 		{
-			for (int n=0; n<samplesPerFrame; n++){
+			// for (int n=0; n<samplesPerFrame; n++){
 
 				float _samples = contributions[y * SCRWIDTH + x] / contributionPerSample;
 				int samples = (int)_samples; // base number of samples, floor
@@ -255,18 +256,25 @@ void Application::Init()
 				for ( int sample = 0; sample < samples; sample++ )
 					dof.Apply( inputImage, accumulator, cocMap, x, y, &ls, multiplier, false );
 				totalSamplesTaken += samples;
-			}
+			// }
 		}
 	}
 
+	std::cout << "starting copying to buffer" << std::endl;
+
 	__m128 gamma = _mm_set1_ps( 0.454545f );
 	float multiplier = 1.0f;
+	std::vector<float> img(SCRHEIGHT*SCRWIDTH*4);
+
 	for ( int y = 0; y < SCRHEIGHT; y++ )
 	{
 		for ( int x = 0; x < SCRWIDTH; x++ )
 		{
 			float4 pixel = accumulator[y * SCRWIDTH + x];
-
+			img[(y * SCRWIDTH + x)] = pixel.r;
+			img[(y * SCRWIDTH + x)+1] = pixel.g;
+			img[(y * SCRWIDTH + x)+2] = pixel.b;
+			img[(y * SCRWIDTH + x)+3] = pixel.a;
 // #ifdef NORMALIZE_PIXELS
 // 			pixel.rgb = HelperFunctions::ToneMap( pixel.rgb * ( exposure / pixel.a ), gamma );
 // #else
@@ -277,6 +285,8 @@ void Application::Init()
 		}
 	}
 
+	save_to_exr(img, outputFileName, SCRWIDTH, SCRHEIGHT);
+	std::cout << "img saved" << std::endl;
 }
 
 
