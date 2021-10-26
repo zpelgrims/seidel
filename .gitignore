@@ -1,4 +1,7 @@
 /x64/*
-/.vs/*
+/.vs*
 *.ma
-*.exr
+*.o
+
+build/
+*.DS_Store
