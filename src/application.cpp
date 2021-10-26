@@ -23,7 +23,6 @@ const float* read_exr_layer(const char* input, const char* layer_name) {
 	} else {
 		// return out;
 		// free(out); // release memory of image data
-		std::cout << "success" << std::endl;
 
 		return out;
 	}
@@ -46,7 +45,6 @@ const float* read_exr_beauty(const char* input) {
 	} else {
 		// return out;
 		// free(out); // release memory of image data
-		std::cout << "success" << std::endl;
 
 		return out;
 	}
@@ -269,15 +267,7 @@ for (int framecount=0; framecount<totalframes; framecount++) {
 			img[((y * SCRWIDTH + x)*4)] = pixel.r;
 			img[((y * SCRWIDTH + x)*4)+1] = pixel.g;
 			img[((y * SCRWIDTH + x)*4)+2] = pixel.b;
-			img[((y * SCRWIDTH + x)*4)+3] = pixel.a;
-
-
-// #ifdef NORMALIZE_PIXELS
-// 			pixel.rgb = HelperFunctions::ToneMap( pixel.rgb * ( exposure / pixel.a ), gamma );
-// #else
-// 			pixel.rgb = HelperFunctions::ToneMap( pixel.rgb * exposure * multiplier, gamma );
-// #endif
-			
+			img[((y * SCRWIDTH + x)*4)+3] = pixel.a;			
 		}
 	}
 
