@@ -119,7 +119,7 @@ void Application::Init()
 
 	lensFileName = "/home/cactus/seidel/assets/lensdesigns/doublegauss.zmx";
 	char* imageFileName = "/home/cactus/seidel/assets/shanghai.exr";
-	samplesPerFrame = 1000;
+	samplesPerFrame = 1000000;
 	frameCountSave = 0;
 	outputFileName = "/home/cactus/seidel/assets/shanghai_out.exr";
 	focus = 0.6;
@@ -227,17 +227,15 @@ void Application::Init()
 
 
 
-
+int totalframes = 100;
+#pragma omp parallel for
+for (int framecount=0; framecount<totalframes; framecount++) {
 	
 	bool clearAccumulator = false;
 	bool recalculateLens = false;
 
 	aperture = clamp( aperture, 0.0f, 1.0f );
-
-	std::cout << "starting computation" << std::endl;
 	
-	#pragma omp parallel for
-	for (int n=0; n<samplesPerFrame; n++){
 	for ( int y = 0; y < SCRHEIGHT; y++ )
 	{
 		for ( int x = 0; x < SCRWIDTH; x++ )
@@ -253,30 +251,33 @@ void Application::Init()
 				totalSamplesTaken += samples;
 			}
 		}
-	}
+
+}
+	
 
 	std::cout << "starting copying to buffer" << std::endl;
 
 	__m128 gamma = _mm_set1_ps( 0.454545f );
-	float multiplier = 1.0f;
+	float multiplier = 1.0f/totalframes;
 	std::vector<float> img(SCRHEIGHT*SCRWIDTH*4);
 
 	for ( int y = 0; y < SCRHEIGHT; y++ )
 	{
 		for ( int x = 0; x < SCRWIDTH; x++ )
 		{
-			float4 pixel = accumulator[y * SCRWIDTH + x];
+			float4 pixel = accumulator[y * SCRWIDTH + x] * exposure * multiplier;
 			img[((y * SCRWIDTH + x)*4)] = pixel.r;
 			img[((y * SCRWIDTH + x)*4)+1] = pixel.g;
 			img[((y * SCRWIDTH + x)*4)+2] = pixel.b;
 			img[((y * SCRWIDTH + x)*4)+3] = pixel.a;
+
+
 // #ifdef NORMALIZE_PIXELS
 // 			pixel.rgb = HelperFunctions::ToneMap( pixel.rgb * ( exposure / pixel.a ), gamma );
 // #else
 // 			pixel.rgb = HelperFunctions::ToneMap( pixel.rgb * exposure * multiplier, gamma );
 // #endif
 			
-			// screen->GetBuffer()[y * SCRWIDTH + x] = HelperFunctions::float4ToUint( pixel );
 		}
 	}
 
