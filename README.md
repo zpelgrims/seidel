@@ -27,18 +27,15 @@ SOFTWARE.
 
 -----
 
-Parameters for the simulation are to be supplied through cmd arguments as:
-
-  lens.zmx image.exr samplesPerFrame frameCount fileName
-
-where image.exr must have four channels; RGB and depth.
-frameCount specifies the frameCount at which the program saves the rendered image to fileName and quits the simulation.
-
-At the top in precomp.h there are some defines to enable/disable certain parts of the simulation, as well as a few parameters to set for the simulation.
+input image.exr must have four channels; RGB and depth.
 
 
-Some other useful information:
-- The entrance point of the program is at Application::Init in Application.cpp.
-- Seidel.h and Seidel.cpp contain the calculations of the Seidel aberrations.
-- LensSystem.cpp contains the (crappy) code that imports ZMX lens designs and calculations of several lens parameters from those designs.
-- DOF.cpp contains the actual ray tracing part.
+TODO:
+
+- compile into nuke plugin
+- rewrite to use arbitraty Z channel instead of alpha
+- figure out what units this thing uses (sensor size / focusing)
+- split image into layers
+- possible edge extension (dilation) to make up for missing data due to aperture size
+- blur each layer separately
+- reassemble layers
