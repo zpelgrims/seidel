@@ -67,6 +67,7 @@
 #include <sstream>
 
 // Namespaced C headers:
+#include <cstring>
 #include <cassert>
 #include <cinttypes>
 #include <cmath>
@@ -75,10 +76,6 @@
 
 // #include <windows.h>
 
-
-
-#define TINYEXR_IMPLEMENTATION
-#include "tinyexr.h"
 
 // Header for AVX, and every technology before it.
 // If your CPU does not support this, include the appropriate header instead.
@@ -89,9 +86,9 @@
 
 // "Leak" common namespaces to all compilation units. This is not standard
 // C++ practice but a mere simplification for this small project.
-using namespace std;
+// using namespace std;
 
-#include "surface.h"
+// #include "surface.h"
 #include "template.h"
 
 using namespace PrimeFocusCPU;

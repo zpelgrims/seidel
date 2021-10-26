@@ -86,7 +86,7 @@ struct LensData
 class LensSystem
 {
 public:
-	void ImportFile( string filepath );
+	void ImportFile( std::string filepath );
 	bool TraceRay( float2* O, float2* D, float wavelength, int lowest_element, int highest_element, bool forwards, bool useGaussianOptics, int* hit, bool registerHit );
 	bool TraceRay3D( float3* O, float3* D, float wavelength, int lowest_element, int highest_element, bool forwards, bool useGaussianOptics );
 	LensData GetLensData( float wavelength, float dist );

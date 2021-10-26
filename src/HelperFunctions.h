@@ -90,28 +90,28 @@ class HelperFunctions
 		return color.dot( float3( 0.27f, 0.67f, 0.06f ) );
 	}
 
-	static float3 ToneMap( float3 color, __m128 gamma )
-	{
-		float max_white_l = 10.0f;
+	// static float3 ToneMap( float3 color, __m128 gamma )
+	// {
+	// 	float max_white_l = 10.0f;
 
-		union {
-			float4 output;
-			__m128 output128;
-		};
+	// 	union {
+	// 		float4 output;
+	// 		__m128 output128;
+	// 	};
 
-		output.rgb = color;
+	// 	output.rgb = color;
 
-		// reinhard
-		float l_old = Luminance( color );
-		float numerator = l_old * ( 1.0f + ( l_old / ( max_white_l * max_white_l ) ) );
-		float l_new = numerator / ( 1.0f + l_old );
-		output.rgb = color * ( l_new / l_old );
+	// 	// reinhard
+	// 	float l_old = Luminance( color );
+	// 	float numerator = l_old * ( 1.0f + ( l_old / ( max_white_l * max_white_l ) ) );
+	// 	float l_new = numerator / ( 1.0f + l_old );
+	// 	output.rgb = color * ( l_new / l_old );
 
-		// gamma
-		output128 = _mm_pow_ps( output128, gamma );
+	// 	// gamma
+	// 	output128 = _mm_pow_ps( output128, gamma );
 
-		return output.rgb;
-	}
+	// 	return output.rgb;
+	// }
 
 	
 	

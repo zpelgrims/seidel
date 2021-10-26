@@ -7,12 +7,12 @@ LensData LensSystem::GetLensData( float wavelength, float dist )
 {
 	float w = ( ( wavelength - 0.360f ) / 0.470f ) * ( LOOKUP_SIZE - 1 );
 	int w1 = (int)w;
-	int w2 = min( w1 + 1, LOOKUP_SIZE - 1 );
+	int w2 = std::min( w1 + 1, LOOKUP_SIZE - 1 );
 	float wpart = ( w - w1 );
 
-	float v = min( LOOKUP_SIZE - 1.0f, ( dist - 0.2f ) / 15.0f * LOOKUP_SIZE );
+	float v = std::min( LOOKUP_SIZE - 1.0f, ( dist - 0.2f ) / 15.0f * LOOKUP_SIZE );
 	int v1 = (int)v;
-	int v2 = min( v1 + 1, LOOKUP_SIZE - 1 );
+	int v2 = std::min( v1 + 1, LOOKUP_SIZE - 1 );
 	float vpart = ( v - v1 );
 
 	LensData ld1 = lensData[w1 * LOOKUP_SIZE + v1];
@@ -509,7 +509,7 @@ void LensSystem::Precalculate( float aperture )
 //
 // Import lens data from ZEMAX file and precalculate lensData values
 //
-void LensSystem::ImportFile( string filepath )
+void LensSystem::ImportFile( std::string filepath )
 {
 	std::ifstream infile( filepath );
 
@@ -644,7 +644,7 @@ void LensSystem::ImportFile( string filepath )
 	// materials
 	for ( int i = 0; i < materials.size(); i++ )
 	{
-		vector<float> dat = Glass::GetDispersionConstants( materials[i] );
+		std::vector<float> dat = Glass::GetDispersionConstants( materials[i] );
 		for ( int j = 0; j < 6; j++ )
 		{
 			dispconstants.push_back( dat[j] );

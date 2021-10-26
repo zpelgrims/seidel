@@ -287,7 +287,7 @@ public:
 	{
 		union { __m128 e4; float e[4]; };
 		e4 = _mm_sub_ps( bmax4, bmin4 );
-		return max( 0.0f, e[0] * e[1] + e[0] * e[2] + e[1] * e[2] );
+		return std::max( 0.0f, e[0] * e[1] + e[0] * e[2] + e[1] * e[2] );
 	}
 	int LongestAxis() const
 	{

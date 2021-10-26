@@ -15,7 +15,7 @@ namespace PrimeFocusCPU
 		float4* inputImage;
 		float4* accumulator;
 
-		vector<int> randomizedPixelOrder;
+		std::vector<int> randomizedPixelOrder;
 		float* cocMap;
 		float contributionPerSample;
 
@@ -37,9 +37,9 @@ namespace PrimeFocusCPU
 		int framecount = 0;
 		float contributions[SCRWIDTH * SCRHEIGHT];
 
-		Timer timer;
-		Timer timerRenders;
-		float rendertime = 0.0f;
+		// Timer timer;
+		// Timer timerRenders;
+		// float rendertime = 0.0f;
 	};
 
 };

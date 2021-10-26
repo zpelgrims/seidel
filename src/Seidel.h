@@ -36,5 +36,5 @@ class Seidel
 	{
 	}
 
-	static void GenerateCoefficients( float wavelength, int num_elements, vector<float> dispconstants, vector<float> radii, vector<float> centers, vector<float> thicknesses, LensData *lensData, float dist );
+	static void GenerateCoefficients( float wavelength, int num_elements, std::vector<float> dispconstants, std::vector<float> radii, std::vector<float> centers, std::vector<float> thicknesses, LensData *lensData, float dist );
 };

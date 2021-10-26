@@ -1,15 +1,15 @@
 #include "precomp.h"
 
-void Seidel::GenerateCoefficients( float wavelength, int num_elements, vector<float> dispconstants, vector<float> radii, vector<float> centers, vector<float> thicknesses, LensData *lensData, float dist )
+void Seidel::GenerateCoefficients( float wavelength, int num_elements, std::vector<float> dispconstants, std::vector<float> radii, std::vector<float> centers, std::vector<float> thicknesses, LensData *lensData, float dist )
 {
-	vector<float> r;
-	vector<float> s;
-	vector<float> s_prime;
-	vector<float> t;
-	vector<float> t_prime;
-	vector<float> n;
-	vector<float> k;
-	vector<float> h;
+	std::vector<float> r;
+	std::vector<float> s;
+	std::vector<float> s_prime;
+	std::vector<float> t;
+	std::vector<float> t_prime;
+	std::vector<float> n;
+	std::vector<float> k;
+	std::vector<float> h;
 
 	//
 	// calculate constants

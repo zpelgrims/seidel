@@ -1,6 +1,11 @@
 #include "precomp.h" // include (only) this in every .cpp file
 
 
+
+#define TINYEXR_IMPLEMENTATION
+#include "tinyexr.h"
+
+
 const float* read_exr_layer(const char* input, const char* layer_name) {
 	float* out; // width * height * RGBA
 	int width;
@@ -100,6 +105,11 @@ void save_to_exr(std::vector<float> img, std::string filename, unsigned xres, un
 	}
 }
 
+inline int fastrand() { 
+  static unsigned int g_seed = (214013*g_seed+2531011); 
+  return (g_seed>>16)&0x7FFF; 
+} 
+
 
 // -----------------------------------------------------------
 // Initialize the application
@@ -112,15 +122,16 @@ void Application::Init()
 
 
 
-	lensFileName = "C:\Users\cactus\niels-asberg-seidel-aberrations\assets\lensdesigns\doublegauss.zmx";
-	char* imageFileName = "C:\Users\cactus\niels-asberg-seidel-aberrations\assets\shanghai.exr";
+	lensFileName = "/home/cactus/seidel/assets/lensdesigns/doublegauss.zmx";
+	char* imageFileName = "/home/cactus/seidel/assets/shanghai.exr";
 	samplesPerFrame = 10000000;
 	frameCountSave = 0;
-	outputFileName = "C:\Users\cactus\niels-asberg-seidel-aberrations\assets\soldiers_out.exr";
+	outputFileName = "/home/cactus/seidel/assets/shanghai_out.exr";
 	focus = 0.6;
 
 
-	Random::seed = Timer::CurrentTime();
+	// Random::seed = Timer::CurrentTime();
+	Random::seed = fastrand();
 	std::cout << "Random seed set to " << Random::seed << std::endl;
 
 	accumulator = new float4[SCRWIDTH * SCRHEIGHT];
@@ -213,8 +224,8 @@ void Application::Init()
 		float4 pixel = inputImage[n];
 		float luminance = HelperFunctions::Luminance( pixel.rgb );
 
-		contributions[n] = max( 400.0f, cocMap[n] ) * luminance;
-		maxContribution = max( maxContribution, contributions[n] );
+		contributions[n] = std::max( 400.0f, cocMap[n] ) * luminance;
+		maxContribution = std::max( maxContribution, contributions[n] );
 		totalContribution += contributions[n];
 	}
 	contributionPerSample = totalContribution / samplesPerFrame;
@@ -239,7 +250,7 @@ void Application::Init()
 				float _samples = contributions[y * SCRWIDTH + x] / contributionPerSample;
 				int samples = (int)_samples; // base number of samples, floor
 				if ( _samples - samples > Random::rnd() ) samples++;
-				float multiplier = 1.0f / samples * ( 1.0f / ( min( 1.0f, _samples ) ) );
+				float multiplier = 1.0f / samples * ( 1.0f / ( std::min( 1.0f, _samples ) ) );
 
 				for ( int sample = 0; sample < samples; sample++ )
 					dof.Apply( inputImage, accumulator, cocMap, x, y, &ls, multiplier, false );
@@ -256,14 +267,20 @@ void Application::Init()
 		{
 			float4 pixel = accumulator[y * SCRWIDTH + x];
 
-#ifdef NORMALIZE_PIXELS
-			pixel.rgb = HelperFunctions::ToneMap( pixel.rgb * ( exposure / pixel.a ), gamma );
-#else
-			pixel.rgb = HelperFunctions::ToneMap( pixel.rgb * exposure * multiplier, gamma );
-#endif
+// #ifdef NORMALIZE_PIXELS
+// 			pixel.rgb = HelperFunctions::ToneMap( pixel.rgb * ( exposure / pixel.a ), gamma );
+// #else
+// 			pixel.rgb = HelperFunctions::ToneMap( pixel.rgb * exposure * multiplier, gamma );
+// #endif
 			
 			// screen->GetBuffer()[y * SCRWIDTH + x] = HelperFunctions::float4ToUint( pixel );
 		}
 	}
 
+}
+
+
+int main () {
+	Application app;
+	app.Init();
 }
