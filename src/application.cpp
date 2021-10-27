@@ -1,7 +1,6 @@
 #include "precomp.h" // include (only) this in every .cpp file
 
 
-
 #define TINYEXR_IMPLEMENTATION
 #include "tinyexr.h"
 
@@ -123,7 +122,6 @@ void Application::Init()
 	focus = 0.6;
 
 
-	// Random::seed = Timer::CurrentTime();
 	Random::seed = fastrand();
 	std::cout << "Random seed set to " << Random::seed << std::endl;
 
@@ -171,7 +169,6 @@ void Application::Init()
 		inputImage[i].b = input_exr[(i*4)+2];
 		inputImage[i].a = input_exr[(i*4)+3];
 	}
-	// HelperFunctions::readImage( inputImage, imageFileName, SCRWIDTH, SCRHEIGHT );
 
 	// clamp values between 0 and 1000000 in order to prevent float overflow
 	for ( int x = 0; x < SCRWIDTH; x++ )

@@ -29,8 +29,9 @@ SOFTWARE.
 
 input image.exr must have four channels; RGB and depth.
 
+-----
 
-TODO:
+# TODO:
 
 - compile into nuke plugin
 - rewrite to use arbitraty Z channel instead of alpha

@@ -5,13 +5,9 @@ namespace PrimeFocusCPU
 	class Application
 	{
 	public:
-		// void SetTarget( Surface* surface ) { screen = surface; }
 		void Init();
-		// void Shutdown();
-		// void Compute();
 
 	private:
-		// Surface* screen;
 		float4* inputImage;
 		float4* accumulator;
 
@@ -32,14 +28,8 @@ namespace PrimeFocusCPU
 		float aperture = 1.0f;
 		float focus = 1.0f;
 
-		bool save_frame = false;
-
 		int framecount = 0;
 		float contributions[SCRWIDTH * SCRHEIGHT];
-
-		// Timer timer;
-		// Timer timerRenders;
-		// float rendertime = 0.0f;
 	};
 
 };

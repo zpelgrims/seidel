@@ -111,8 +111,6 @@ public:
 
 	std::vector<std::string> materials;
 
-	// Surface* screen;
-
 	byte apertureSprite[65536]; // one channel aperture sprite, 256x256 pixels
 	float spriteMultiplier = 1.0f;
 

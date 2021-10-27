@@ -47,29 +47,6 @@ inline float Rand( float range ) { return RandomFloat() * range; }
 
 namespace PrimeFocusCPU {
 
-// struct timer
-// {
-// 	typedef std::chrono::high_resolution_clock Clock;
-// 	typedef Clock::time_point TimePoint;
-// 	typedef std::chrono::microseconds MicroSeconds;
-
-// 	TimePoint start;
-// 	inline timer() : start( get() ) {}
-
-// 	/// Returns the elapsed time, in milliseconds.
-// 	inline float elapsed() const
-// 	{
-// 		auto diff = get() - start;
-// 		auto duration_us = std::chrono::duration_cast<MicroSeconds>( diff );
-// 		return static_cast<float>( duration_us.count() ) / 1000.0f;
-// 	}
-// 	static inline TimePoint get()
-// 	{
-// 		return Clock::now();
-// 	}
-
-// 	inline void reset() { start = get(); }
-// };
 
 // vectors
 class float2 // adapted from https://github.com/dcow/RayTracer
